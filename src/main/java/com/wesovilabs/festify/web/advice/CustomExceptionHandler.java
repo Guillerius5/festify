@@ -1,6 +1,7 @@
 package com.wesovilabs.festify.web.advice;
 
 import com.wesovilabs.festify.util.exception.ArtistNotFoundException;
+import com.wesovilabs.festify.util.exception.FestivalNotFoundException;
 import com.wesovilabs.festify.util.exception.InvalidIdException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,16 @@ public class CustomExceptionHandler {
                 ex.getMessage()
         );
         pd.setTitle("Artista con id proporcionada no existe");
+        pd.setProperty("path", request.getRequestURI());
+        return pd;
+    }
+    @ExceptionHandler(FestivalNotFoundException.class)
+    ProblemDetail handleFestivalNotFoundException(FestivalNotFoundException ex, HttpServletRequest request) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                ex.getMessage()
+        );
+        pd.setTitle("Festival con id proporcionada no existe");
         pd.setProperty("path", request.getRequestURI());
         return pd;
     }

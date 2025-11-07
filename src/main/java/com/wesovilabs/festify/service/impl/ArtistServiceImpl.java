@@ -12,6 +12,10 @@ import com.wesovilabs.festify.util.exception.InvalidIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +34,12 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistResumeResponse> listArtists() {
-        List<ArtistEntity> artists =  this.artistJpaRepository.findAll();
+        Pageable pageable =
+                PageRequest.of(0, 5,
+                        Sort.by("price").descending().and(Sort.by("name"))
+                );
+        Example<ArtistEntity> example = Example.of(new ArtistEntity());
+        List<ArtistEntity> artists =  this.artistJpaRepository.findAll(example);
         return artists.stream().map(ArtistMapper::mapArtistToArtistResume).toList();
     }
 
