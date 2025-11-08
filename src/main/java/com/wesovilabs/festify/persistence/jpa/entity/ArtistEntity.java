@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="artists")
+@Table(name="albums")
 public class ArtistEntity {
 
     @Id
